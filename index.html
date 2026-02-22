@@ -89,6 +89,8 @@
         background: var(--leftPanelBg);
         padding: calc(var(--panelPad) * var(--uiScale));
         transform-origin: top left;
+        display: flex;
+        flex-direction: column;
       }
 
       .rightPanel {
@@ -138,6 +140,8 @@
         flex-direction: column;
         gap: calc(var(--sectionGap) * var(--uiScale));
         margin-top: calc(12px * var(--uiScale));
+        flex: 1 1 auto;
+        min-height: 0; /* super important so inner scrollers can work */
       }
 
       .labelRow {
@@ -293,9 +297,14 @@
       .autoOnly {
         display: none;
       }
+
       .isAuto .autoOnly {
-        display: block;
+        display: flex; /* was block */
+        flex-direction: column;
+        gap: calc(10px * var(--uiScale));
+        min-height: 0;
       }
+
       .isAuto .manualOnly {
         display: none;
       }
@@ -410,6 +419,8 @@
         box-shadow: none; /* remove drop shadow */
         transition: background 0.12s ease; /* only fill changes */
         text-transform: none; /* no caps */
+
+        flex-shrink: 0;
       }
       .primary:hover {
         background: var(--primaryHover); /* only fill darker */

@@ -20,29 +20,35 @@ function injectStyles() {
     display:none;
     margin-top: calc(8px * var(--uiScale));
     width: 100%;
-    flex: 0 0 auto;
+    flex: 1 1 auto;
+    min-height: 0;              /* ✅ critical */
   }
-    .advWrap.show{ display:block; }
+  .advWrap.show{
+    display:flex;               /* ✅ MUST be flex, not block */
+    flex-direction: column;     /* ✅ so child can flex */
+    min-height: 0;              /* ✅ critical */
+  }
 
-    .advScroll{
-        width: 100%;
-        max-height: calc(260px * var(--uiScale));
-        overflow-y: auto;
-        overflow-x: hidden;
-      
-        padding-right: 2px;
-        padding-bottom: calc(10px * var(--uiScale));
-        display:flex;
-        flex-direction:column;
-        gap: calc(10px * var(--uiScale));
-        overscroll-behavior: contain;
-        -webkit-overflow-scrolling: touch;
-      
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-      }
-      .advScroll::-webkit-scrollbar{ width: 0; height: 0; }
-      
+  .advScroll{
+    width: 100%;
+    flex: 1 1 auto;          /* ✅ take available space */
+    min-height: 0;           /* ✅ allows overflow to work */
+    overflow-y: auto;        /* ✅ scroll ONLY here */
+    overflow-x: hidden;
+  
+    padding-right: 2px;
+    padding-bottom: calc(10px * var(--uiScale));
+    display:flex;
+    flex-direction:column;
+    gap: calc(10px * var(--uiScale));
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .advScroll::-webkit-scrollbar{ width: 0; height: 0; }
+
     .advBlock{
       display:flex;
       flex-direction:column;
