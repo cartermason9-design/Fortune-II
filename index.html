@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Wheel UI Layout</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --pageBg: #0b1a22;
+
+        /* panels */
+        --leftPanelBg: #203743;
+        --rightPanelBg: #0f212e;
+
+        /* ui tokens */
+        --panelFill: #16252d;
+        --stroke: #395565;
+        --label: #9fbed0;
+        --text: #b6d2e3;
+        --primaryFill: #1267c6;
+        --white: #ffffff;
+        --quickText: #9fbed0;
+
+        --shadowTop: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        --shadowSoft: 0 10px 30px rgba(0, 0, 0, 0.25);
+
+        --appRadius: 14px;
+
+        /* sizing */
+        --controlH: 44px;
+        --controlR: 12px;
+        --panelPad: 18px;
+        --sectionGap: 10px;
+        --labelGap: 8px;
+
+        /* dropdown menu */
+        --menuBg: #16252d;
+        --menuStroke: #395565;
+        --menuHover: rgba(57, 85, 101, 0.55);
+
+        /* shrink */
+        --uiScale: 0.92;
+        --leftW: 304px;
+
+        /* NEW: primary hover fill */
+        --primaryHover: #0f5bb0;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        background: var(--pageBg);
+        font-family: "Inter", ui-sans-serif, system-ui, -apple-system, Segoe UI,
+          Roboto, Helvetica, Arial;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+
+      .appShell {
+        width: min(1200px, calc(100vw - 48px));
+        height: min(720px, calc(100vh - 48px));
+        border-radius: var(--appRadius);
+        overflow: hidden;
+        display: flex;
+        background: rgba(0, 0, 0, 0.15);
+      }
+
+      /* LEFT */
+      .leftPanel {
+        width: var(--leftW);
+        background: var(--leftPanelBg);
+        padding: calc(var(--panelPad) * var(--uiScale));
+        transform-origin: top left;
+      }
+
+      .rightPanel {
+        flex: 1;
+        background: var(--rightPanelBg);
+        position: relative;
+        padding: var(--panelPad);
+      }
+
+      /* segmented */
+      .segWrap {
+        width: 100%;
+        border-radius: 999px;
+        padding: calc(7px * var(--uiScale));
+        background: rgba(0, 0, 0, 0.18);
+        box-shadow: var(--shadowTop);
+      }
+      .seg {
+        display: flex;
+        gap: calc(7px * var(--uiScale));
+      }
+      .segBtn {
+        flex: 1;
+        height: calc(40px * var(--uiScale));
+        border-radius: 999px;
+        border: 0;
+        background: transparent;
+        color: var(--white);
+        font-weight: 500;
+        font-size: calc(17px * var(--uiScale));
+        letter-spacing: 0.2px;
+        cursor: pointer;
+        opacity: 0.92;
+        transition: background 0.12s ease, opacity 0.12s ease;
+      }
+      .segBtn.isActive {
+        background: rgba(57, 85, 101, 0.55);
+        opacity: 1;
+      }
+      .segBtn:hover {
+        background: rgba(57, 85, 101, 0.42);
+        opacity: 1;
+      }
+
+      .stack {
+        display: flex;
+        flex-direction: column;
+        gap: calc(var(--sectionGap) * var(--uiScale));
+        margin-top: calc(12px * var(--uiScale));
+      }
+
+      .labelRow {
+        margin: 0 2px calc(var(--labelGap) * var(--uiScale));
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: calc(10px * var(--uiScale));
+      }
+
+      .label {
+        color: var(--label);
+        font-weight: 500;
+        font-size: calc(17px * var(--uiScale));
+        letter-spacing: 0.2px;
+      }
+
+      /* Bet Amount */
+      .betRow {
+        width: 100%;
+        height: calc(var(--controlH) * var(--uiScale));
+        border-radius: var(--controlR);
+        background: var(--panelFill);
+        border: 2px solid var(--stroke);
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        box-shadow: var(--shadowTop);
+      }
+
+      .betSlot {
+        height: 100%;
+        width: 64%;
+        display: flex;
+        align-items: center;
+        padding: 0 calc(12px * var(--uiScale));
+      }
+
+      .betInput {
+        width: 100%;
+        border: 0;
+        outline: 0;
+        background: transparent;
+        color: var(--text);
+        font-weight: 400;
+        font-size: calc(17px * var(--uiScale));
+        padding: 0;
+      }
+
+      .betDivider {
+        width: 2px;
+        height: 70%;
+        background: rgba(182, 210, 227, 0.55);
+        opacity: 0.55;
+      }
+
+      .miniBtn {
+        width: calc(64px * var(--uiScale));
+        height: 100%;
+        border: 0;
+        background: transparent;
+        color: var(--quickText);
+        font-weight: 500;
+        font-size: calc(17px * var(--uiScale));
+        cursor: pointer;
+        transition: background 0.12s ease, filter 0.12s ease;
+      }
+      .miniBtn:hover {
+        background: rgba(255, 255, 255, 0.06);
+      }
+      .miniBtn:active {
+        filter: brightness(1.06);
+      }
+
+      /* ===== CUSTOM DROPDOWN ===== */
+      .dd {
+        position: relative;
+        width: 100%;
+      }
+
+      .ddBtn {
+        width: 100%;
+        height: calc(var(--controlH) * var(--uiScale));
+        border-radius: var(--controlR);
+        background: var(--panelFill);
+        border: 2px solid var(--stroke);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 calc(12px * var(--uiScale));
+        box-shadow: var(--shadowTop);
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .ddValue {
+        font-weight: 400;
+        font-size: calc(17px * var(--uiScale));
+        color: var(--text);
+      }
+
+      .ddCaret {
+        width: calc(10px * var(--uiScale));
+        height: calc(10px * var(--uiScale));
+        transform: rotate(45deg);
+        border-right: 3px solid var(--text);
+        border-bottom: 3px solid var(--text);
+        opacity: 0.9;
+        margin-right: calc(4px * var(--uiScale));
+        transition: transform 0.14s ease;
+      }
+      .dd.open .ddCaret {
+        transform: rotate(-135deg);
+      }
+
+      .ddMenu {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: calc((var(--controlH) * var(--uiScale)) + 6px);
+        background: var(--menuBg);
+        border: 2px solid var(--menuStroke);
+        border-radius: var(--controlR);
+        box-shadow: var(--shadowSoft);
+        padding: calc(6px * var(--uiScale));
+        display: none;
+        z-index: 50;
+      }
+      .dd.open .ddMenu {
+        display: block;
+      }
+
+      .ddItem {
+        height: calc(34px * var(--uiScale));
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        padding: 0 calc(10px * var(--uiScale));
+        font-weight: 400;
+        font-size: calc(17px * var(--uiScale));
+        color: var(--text);
+        cursor: pointer;
+        user-select: none;
+      }
+      .ddItem:hover {
+        background: var(--menuHover);
+      }
+      .ddItem.isSelected {
+        background: rgba(57, 85, 101, 0.35);
+      }
+
+      /* ===== Auto tab extra layout ===== */
+      .autoOnly {
+        display: none;
+      }
+      .isAuto .autoOnly {
+        display: block;
+      }
+      .isAuto .manualOnly {
+        display: none;
+      }
+
+      /* Number of bets field */
+      .numWrap {
+        position: relative;
+        width: 100%;
+        height: calc(var(--controlH) * var(--uiScale));
+        border-radius: var(--controlR);
+        background: var(--panelFill);
+        border: 2px solid var(--stroke);
+        display: flex;
+        align-items: center;
+        padding: 0 calc(12px * var(--uiScale));
+        box-shadow: var(--shadowTop);
+      }
+      .numInput {
+        width: 100%;
+        border: 0;
+        outline: 0;
+        background: transparent;
+        color: var(--text);
+        font-weight: 400;
+        font-size: calc(17px * var(--uiScale));
+        padding-right: calc(28px * var(--uiScale));
+      }
+
+      .infIcon {
+        position: absolute;
+        right: calc(10px * var(--uiScale));
+        top: 50%;
+        transform: translateY(-50%);
+        width: calc(18px * var(--uiScale));
+        height: calc(18px * var(--uiScale));
+        opacity: 0.85;
+        display: none;
+        pointer-events: none;
+      }
+      .infIcon svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+      .infIcon path {
+        stroke: var(--text) !important;
+      }
+
+      /* Advanced toggle pinned right */
+      .toggleRow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: calc(10px * var(--uiScale));
+        margin-top: calc(2px * var(--uiScale));
+        width: 100%;
+      }
+      .toggleLabel {
+        color: var(--label);
+        font-weight: 500;
+        font-size: calc(17px * var(--uiScale));
+        letter-spacing: 0.2px;
+        margin-left: 2px;
+        min-width: calc(92px * var(--uiScale));
+      }
+
+      .switch {
+        width: calc(58px * var(--uiScale));
+        height: calc(30px * var(--uiScale));
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.18);
+        border: 2px solid rgba(255, 255, 255, 0.08);
+        position: relative;
+        cursor: pointer;
+        box-shadow: var(--shadowTop);
+        flex: 0 0 auto;
+        padding: 0;
+        margin-left: auto;
+      }
+      .switchKnob {
+        width: calc(22px * var(--uiScale));
+        height: calc(22px * var(--uiScale));
+        border-radius: 999px;
+        background: var(--white);
+        position: absolute;
+        top: 50%;
+        left: calc(5px * var(--uiScale));
+        transform: translateY(-50%);
+        transition: left 0.14s ease;
+      }
+      .switch.isOn {
+        background: var(--primaryFill);
+        border-color: rgba(0, 0, 0, 0);
+      }
+      .switch.isOn .switchKnob {
+        left: calc(100% - (27px * var(--uiScale)));
+      }
+
+      /* PRIMARY BET BUTTONS (ONLY CHANGED PART) */
+      .primary {
+        width: 100%;
+        height: calc(52px * var(--uiScale));
+        margin-top: calc(8px * var(--uiScale));
+        border-radius: 12px;
+        border: 0;
+        background: var(--primaryFill);
+        color: var(--white);
+        font-weight: 600; /* Inter SemiBold */
+        font-size: calc(19px * var(--uiScale));
+        letter-spacing: 0px; /* keep clean */
+        cursor: pointer;
+        box-shadow: none; /* remove drop shadow */
+        transition: background 0.12s ease; /* only fill changes */
+        text-transform: none; /* no caps */
+      }
+      .primary:hover {
+        background: var(--primaryHover); /* only fill darker */
+      }
+      .primary:active {
+        background: #0d539f;
+      }
+
+      /* right panel placeholder only */
+      .wheelStage {
+        position: absolute;
+        inset: var(--panelPad);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0.25;
+        pointer-events: none;
+      }
+      .wheelPlaceholder {
+        width: min(520px, 70vmin);
+        aspect-ratio: 1/1;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.04);
+        box-shadow: inset 0 0 0 10px rgba(255, 255, 255, 0.06);
+      }
+
+      @media (max-width: 980px) {
+        .appShell {
+          width: 100%;
+          height: 100%;
+          border-radius: 0;
+        }
+        body {
+          padding: 0;
+        }
+        .leftPanel {
+          width: 100%;
+        }
+      }
+      @media (max-width: 860px) {
+        .appShell {
+          flex-direction: column;
+        }
+        .rightPanel {
+          min-height: 520px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="appShell">
+      <!-- LEFT -->
+      <div class="leftPanel" id="leftPanel">
+        <div class="segWrap">
+          <div class="seg" role="tablist" aria-label="Mode">
+            <button
+              class="segBtn isActive"
+              id="manualBtn"
+              type="button"
+              role="tab"
+              aria-selected="true"
+            >
+              Manual
+            </button>
+            <button
+              class="segBtn"
+              id="autoBtn"
+              type="button"
+              role="tab"
+              aria-selected="false"
+            >
+              Auto
+            </button>
+          </div>
+        </div>
+
+        <div class="stack">
+          <!-- Bet Amount -->
+          <div>
+            <div class="labelRow"><div class="label">Bet Amount</div></div>
+            <div class="betRow">
+              <div class="betSlot">
+                <input
+                  class="betInput"
+                  id="betAmount"
+                  type="text"
+                  value="10.00"
+                  inputmode="decimal"
+                />
+              </div>
+              <div class="betDivider"></div>
+              <button class="miniBtn" id="halfBtn" type="button">½</button>
+              <div class="betDivider"></div>
+              <button class="miniBtn" id="doubleBtn" type="button">2×</button>
+            </div>
+          </div>
+
+          <!-- Difficulty -->
+          <div>
+            <div class="labelRow"><div class="label">Difficulty</div></div>
+            <div class="dd" id="ddDifficulty">
+              <div
+                class="ddBtn"
+                role="button"
+                tabindex="0"
+                aria-haspopup="listbox"
+                aria-expanded="false"
+              >
+                <div class="ddValue" data-value>Medium</div>
+                <div class="ddCaret" aria-hidden="true"></div>
+              </div>
+              <div class="ddMenu" role="listbox">
+                <div class="ddItem" data-v="Low">Low</div>
+                <div class="ddItem isSelected" data-v="Medium">Medium</div>
+                <div class="ddItem" data-v="High">High</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Segments -->
+          <div>
+            <div class="labelRow"><div class="label">Segments</div></div>
+            <div class="dd" id="ddSegments">
+              <div
+                class="ddBtn"
+                role="button"
+                tabindex="0"
+                aria-haspopup="listbox"
+                aria-expanded="false"
+              >
+                <div class="ddValue" data-value>30</div>
+                <div class="ddCaret" aria-hidden="true"></div>
+              </div>
+              <div class="ddMenu" role="listbox">
+                <div class="ddItem" data-v="10">10</div>
+                <div class="ddItem" data-v="20">20</div>
+                <div class="ddItem isSelected" data-v="30">30</div>
+                <div class="ddItem" data-v="40">40</div>
+                <div class="ddItem" data-v="50">50</div>
+                <div class="ddItem" data-v="60">60</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- AUTO-ONLY -->
+          <div class="autoOnly">
+            <div>
+              <div class="labelRow">
+                <div class="label">Number of Bets</div>
+              </div>
+              <div class="numWrap">
+                <input
+                  class="numInput"
+                  id="numBets"
+                  type="text"
+                  value="0"
+                  inputmode="numeric"
+                />
+                <div
+                  class="infIcon"
+                  id="infIcon"
+                  aria-hidden="true"
+                  title="Infinite"
+                >
+                  <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M256,256s-48-96-126-96c-54.12,0-98,43-98,96s43.88,96,98,96c30,0,56.45-13.18,78-32"
+                      style="
+                        fill: none;
+                        stroke: #000000;
+                        stroke-linecap: round;
+                        stroke-miterlimit: 10;
+                        stroke-width: 48px;
+                      "
+                    ></path>
+                    <path
+                      d="M256,256s48,96,126,96c54.12,0,98-43,98-96s-43.88-96-98-96c-29.37,0-56.66,13.75-78,32"
+                      style="
+                        fill: none;
+                        stroke: #000000;
+                        stroke-linecap: round;
+                        stroke-miterlimit: 10;
+                        stroke-width: 48px;
+                      "
+                    ></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="toggleRow">
+              <div class="toggleLabel">Advanced</div>
+              <div
+                class="switch"
+                id="advSwitch"
+                role="switch"
+                aria-checked="false"
+                tabindex="0"
+              >
+                <div class="switchKnob"></div>
+              </div>
+            </div>
+
+            <button class="primary" id="startAutobet" type="button">
+              Start Autobet
+            </button>
+          </div>
+
+          <!-- MANUAL ONLY -->
+          <button class="primary manualOnly" id="placeBet" type="button">
+            Place Bet
+          </button>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="rightPanel">
+        <div class="wheelStage">
+          <div class="wheelPlaceholder"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ---------- segmented: manual/auto ----------
+      const leftPanel = document.getElementById("leftPanel");
+      const manualBtn = document.getElementById("manualBtn");
+      const autoBtn = document.getElementById("autoBtn");
+
+      // ---------- dropdown manager ----------
+      let openDD = null;
+
+      function closeDropdown(dd) {
+        if (!dd) return;
+        dd.classList.remove("open");
+        const btn = dd.querySelector(".ddBtn");
+        if (btn) btn.setAttribute("aria-expanded", "false");
+        if (openDD === dd) openDD = null;
+      }
+
+      function openDropdown(dd) {
+        if (!dd) return;
+        if (openDD && openDD !== dd) closeDropdown(openDD);
+        dd.classList.add("open");
+        const btn = dd.querySelector(".ddBtn");
+        if (btn) btn.setAttribute("aria-expanded", "true");
+        openDD = dd;
+      }
+
+      function toggleDropdown(dd) {
+        if (!dd) return;
+        if (dd.classList.contains("open")) closeDropdown(dd);
+        else openDropdown(dd);
+      }
+
+      function setMode(mode) {
+        const isManual = mode === "manual";
+        manualBtn.classList.toggle("isActive", isManual);
+        autoBtn.classList.toggle("isActive", !isManual);
+        manualBtn.setAttribute("aria-selected", String(isManual));
+        autoBtn.setAttribute("aria-selected", String(!isManual));
+        leftPanel.classList.toggle("isAuto", !isManual);
+        closeDropdown(openDD);
+      }
+
+      manualBtn.addEventListener("click", () => setMode("manual"));
+      autoBtn.addEventListener("click", () => setMode("auto"));
+      setMode("manual");
+
+      // ---------- bet amount formatting + half/double ----------
+      const betAmount = document.getElementById("betAmount");
+      betAmount.addEventListener("blur", () => {
+        const raw = String(betAmount.value || "").replace(/[^0-9.]/g, "");
+        const n = Number(raw);
+        betAmount.value = Number.isFinite(n) ? n.toFixed(2) : "0.00";
+      });
+
+      document.getElementById("halfBtn").addEventListener("click", () => {
+        const n = Number(String(betAmount.value).replace(/[^0-9.]/g, ""));
+        betAmount.value = (Number.isFinite(n) ? n / 2 : 0).toFixed(2);
+      });
+
+      document.getElementById("doubleBtn").addEventListener("click", () => {
+        const n = Number(String(betAmount.value).replace(/[^0-9.]/g, ""));
+        betAmount.value = (Number.isFinite(n) ? n * 2 : 0).toFixed(2);
+      });
+
+      // ---------- custom dropdown behavior (single-open) ----------
+      function mountDropdown(rootEl) {
+        const btn = rootEl.querySelector(".ddBtn");
+        const valueEl = rootEl.querySelector("[data-value]");
+        const items = Array.from(rootEl.querySelectorAll(".ddItem"));
+
+        const select = (val) => {
+          valueEl.textContent = val;
+          items.forEach((it) =>
+            it.classList.toggle("isSelected", it.dataset.v === val)
+          );
+          closeDropdown(rootEl);
+        };
+
+        btn.addEventListener("pointerdown", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          toggleDropdown(rootEl);
+        });
+
+        btn.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            toggleDropdown(rootEl);
+          }
+          if (e.key === "Escape") closeDropdown(rootEl);
+        });
+
+        items.forEach((it) => {
+          it.addEventListener("pointerdown", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            select(it.dataset.v);
+          });
+        });
+      }
+
+      mountDropdown(document.getElementById("ddDifficulty"));
+      mountDropdown(document.getElementById("ddSegments"));
+
+      // click outside closes
+      document.addEventListener("pointerdown", (e) => {
+        if (!openDD) return;
+        if (openDD.contains(e.target)) return;
+        closeDropdown(openDD);
+      });
+
+      // ---------- Number of Bets infinity icon ONLY when value is "0" ----------
+      const numBets = document.getElementById("numBets");
+      const infIcon = document.getElementById("infIcon");
+
+      function updateInfinity() {
+        const v = String(numBets.value || "").trim();
+        infIcon.style.display = v === "0" ? "block" : "none";
+      }
+
+      numBets.addEventListener("input", () => {
+        const cleaned = String(numBets.value).replace(/[^\d]/g, "");
+        numBets.value = cleaned === "" ? "" : String(parseInt(cleaned, 10));
+        updateInfinity();
+      });
+
+      numBets.addEventListener("blur", () => {
+        if (numBets.value === "") numBets.value = "0";
+        updateInfinity();
+      });
+
+      updateInfinity();
+
+      // ---------- Toggle switch: visual only ----------
+      const advSwitch = document.getElementById("advSwitch");
+      function setSwitch(on) {
+        advSwitch.classList.toggle("isOn", !!on);
+        advSwitch.setAttribute("aria-checked", String(!!on));
+      }
+      advSwitch.addEventListener("click", () =>
+        setSwitch(!advSwitch.classList.contains("isOn"))
+      );
+      advSwitch.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          setSwitch(!advSwitch.classList.contains("isOn"));
+        }
+      });
+      setSwitch(false);
+    </script>
+    <script type="module">
+      import "./chance-bar.js";
+    </script>
+    <script type="module">
+      import "./wheel-stake.js";
+    </script>
+    <script type="module">
+      import "./live-stats.js";
+    </script>
+    <script type="module">
+      import "./how-to-play.js";
+    </script>
+    <script type="module">
+      import "./profile-login.js";
+    </script>
+    <script type="module">
+      import "./live-rank-widget.js";
+    </script>
+    <script type="module">
+      import "./advanced-autobet.js";
+    </script>
+    <script type="module" src="./reset-balance-modal.js"></script>
+  </body>
+</html>
