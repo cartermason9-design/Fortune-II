@@ -740,16 +740,16 @@ function buildUI() {
   }
 
   if (!mountObservers()) {
-    mountIv = setInterval(() => {
+    const docMO = new MutationObserver(() => {
       if (mountObservers()) {
-        clearInterval(mountIv);
-        mountIv = null;
+        docMO.disconnect();
       }
-    }, 80);
-    setTimeout(() => {
-      if (mountIv) clearInterval(mountIv);
-      mountIv = null;
-    }, 8000);
+    });
+
+    docMO.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
   }
 
   // initial render
