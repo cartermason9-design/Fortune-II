@@ -16,32 +16,33 @@ function injectStyles() {
   const st = document.createElement("style");
   st.id = STYLE_ID;
   st.textContent = `
-    .advWrap{
-      display:none;
-      margin-top: calc(8px * var(--uiScale));
-      width: 100%;
-      flex: 0 0 auto;
-    }
+  .advWrap{
+    display:none;
+    margin-top: calc(8px * var(--uiScale));
+    width: 100%;
+    flex: 0 0 auto;
+  }
     .advWrap.show{ display:block; }
 
     .advScroll{
-      width: 100%;
-      max-height: calc(260px * var(--uiScale));
-      overflow-y: auto;
-      overflow-x: hidden;
-      padding-right: 2px;
-      padding-bottom: calc(10px * var(--uiScale));
-      display:flex;
-      flex-direction:column;
-      gap: calc(10px * var(--uiScale));
-      overscroll-behavior: contain;
-      -webkit-overflow-scrolling: touch;
-
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-    }
-    .advScroll::-webkit-scrollbar{ width: 0; height: 0; }
-
+        width: 100%;
+        max-height: calc(260px * var(--uiScale));
+        overflow-y: auto;
+        overflow-x: hidden;
+      
+        padding-right: 2px;
+        padding-bottom: calc(10px * var(--uiScale));
+        display:flex;
+        flex-direction:column;
+        gap: calc(10px * var(--uiScale));
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+      
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+      .advScroll::-webkit-scrollbar{ width: 0; height: 0; }
+      
     .advBlock{
       display:flex;
       flex-direction:column;
